@@ -1,24 +1,61 @@
-import React, { useState } from 'react';
-import './Chat.css';
+import { useEffect, useState } from 'react';
+import '../styles/Chat.css';
 
 function Chat() {
-    const [messages, setMessages] = useState([]); // State to hold messages
-    const [inputValue, setInputValue] = useState(''); // State to hold input value
+    const [messages, setMessages] = useState([]);
+    const [inputValue, setInputValue] = useState('');
 
-    // Function to handle sending a message
-    const sendMessage = () => {
+    useEffect(() => {
+        populateChatData();
+    }, []);
+
+    const sendMessage = async () => {
         if (inputValue.trim() !== '') {
             const newMessage = {
                 text: inputValue,
-                sender: 'user', // You can set the sender here (e.g., 'user' or 'bot')
+                sender: 'user',
             };
-            setMessages([...messages, newMessage]);
-            setInputValue(''); // Clear input after sending message
+
+            console.log('Sending message:', newMessage); // Log the message being sent
+
+
+            const response = await fetch('Chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ SearchText: inputValue }),
+            });
+
+            if (response.ok) {
+                const responseData = await response.json();
+                const botMessage = {
+                    text: responseData,
+                    sender: 'bot',
+                };
+
+                console.log('Received bot response:', botMessage); // Log the bot response
+
+                setMessages([...messages, newMessage, botMessage]);
+            } else {
+                console.error('Failed to send message');
+            }
+
+            setInputValue('');
         }
+    };
+
+    const populateChatData = async () => {
+        const response = await fetch('Chat');
+        const data = await response.json();
+        console.log('Received chat data:', data); // Log the chat data received
+
+        setMessages(data);
     };
 
     return (
         <div className="chat-container">
+            {/* Display messages */}
             <div className="messages-container">
                 {messages.map((message, index) => (
                     <div
@@ -29,6 +66,8 @@ function Chat() {
                     </div>
                 ))}
             </div>
+
+            {/* Input for sending messages */}
             <div className="input-container">
                 <input
                     type="text"

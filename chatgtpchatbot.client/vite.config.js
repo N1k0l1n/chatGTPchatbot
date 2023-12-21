@@ -41,20 +41,21 @@ export default defineConfig({
     plugins: [plugin()],
     resolve: {
         alias: {
-            '@': fileURLToPath(new URL('./src', import.meta.url))
-        }
+            '@': fileURLToPath(new URL('./src', import.meta.url)),
+        },
     },
     server: {
         proxy: {
-            '^/weatherforecast': {
+            '^/Chat': {
                 target: 'https://localhost:7190/',
-                secure: false
-            }
+                secure: false,
+                rewrite: (path) => path.replace(/^\/api\/Chat/, '/api/Chat'),
+            },
         },
         port: 5173,
         https: {
             key: fs.readFileSync(keyFilePath),
             cert: fs.readFileSync(certFilePath),
-        }
-    }
-})
+        },
+    },
+});

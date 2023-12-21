@@ -5,7 +5,7 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace chatGTPchatbot.Server.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class ChatController : ControllerBase
     {
@@ -28,7 +28,7 @@ namespace chatGTPchatbot.Server.Controllers
             Description = "Generates AI-based completion text for a given prompt."
         )]
         [SwaggerResponse(200, "AI completion text", typeof(string))]
-        public async Task<IActionResult> GetAIBasedResults(string SearchText)
+        public async Task<IActionResult> GetAIBasedResults([FromBody] string SearchText)
         {
             string APIKey = _configuration["MySecretValues:Token"];
             string answer = string.Empty;
