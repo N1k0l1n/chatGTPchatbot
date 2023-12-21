@@ -28,14 +28,14 @@ namespace chatGTPchatbot.Server.Controllers
             Description = "Generates AI-based completion text for a given prompt."
         )]
         [SwaggerResponse(200, "AI completion text", typeof(string))]
-        public async Task<IActionResult> GetAIBasedResults([FromBody] string SearchText)
+        public async Task<IActionResult> GetAIBasedResults([FromBody] object SearchText)
         {
             string APIKey = _configuration["MySecretValues:Token"];
             string answer = string.Empty;
 
             var openai = new OpenAIAPI(APIKey);
             CompletionRequest completion = new CompletionRequest();
-            completion.Prompt = SearchText;
+            completion.Prompt = SearchText.ToString();
             completion.Model = OpenAI_API.Models.Model.DavinciText;
             completion.MaxTokens = 200;
 

@@ -1,13 +1,13 @@
-import './App.css';
 import Chat from './components/Chat';
 
 function App() {
   
 
     return (
-        <div>
+        <>
+            <h2>Weekly Coding Challenge #8 <br /> Chat Interface</h2>
             <Chat/>
-        </div>
+        </>
     );
     
 
