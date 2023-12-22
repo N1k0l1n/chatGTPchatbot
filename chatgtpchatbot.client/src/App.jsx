@@ -5,7 +5,7 @@ function App() {
 
     return (
         <>
-            <h2>Weekly Coding Challenge #8 <br /> Chat Interface</h2>
+            <h2>DaVinci Text Model Response <br /> Chat Bot</h2>
             <Chat/>
         </>
     );
